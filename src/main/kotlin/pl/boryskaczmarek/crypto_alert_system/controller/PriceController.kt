@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import pl.boryskaczmarek.crypto_alert_system.dto.PriceData
 import pl.boryskaczmarek.crypto_alert_system.service.CryptoPriceFetcher
 import java.math.BigDecimal
 
@@ -17,7 +18,7 @@ class PriceController {
     fun getPrices(
         @RequestParam ids: String,
         @RequestParam(name = "vs_currencies") vsCurrencies: String
-    ): Map<String, Map<String, BigDecimal>> {
+    ): PriceData {
         val prices = cryptoPriceFetcher.fetchPrices(ids, vsCurrencies)
         return prices
     }

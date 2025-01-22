@@ -4,12 +4,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
+import pl.boryskaczmarek.crypto_alert_system.dto.PriceData
 import java.math.BigDecimal
 
 class CryptoPriceFetcherTest {
 
     private val cryptoPriceFetcher = mock(CryptoPriceFetcher::class.java)
-    private val prices = HashMap<String, HashMap<String, BigDecimal>>()
+    private val prices = mock(PriceData::class.java)
 
     @BeforeEach
     fun setUp() {
