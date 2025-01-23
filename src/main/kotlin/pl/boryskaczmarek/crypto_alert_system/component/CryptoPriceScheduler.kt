@@ -10,7 +10,7 @@ class CryptoPriceScheduler(
     private val cryptoPriceFetcher: CryptoPriceFetcher,
     private val kafkaProducerService: KafkaProducerService
 ) {
-    @Scheduled(fixedRate = 360_000) // run every 6 minutes
+    @Scheduled(fixedRate = 180_000) // run every 3 minutes
     fun schedulePriceUpdates() {
         val priceData = cryptoPriceFetcher.fetchPrices("bitcoin,ethereum,solana", "usd,pln")
         kafkaProducerService.sendPriceUpdate(priceData)

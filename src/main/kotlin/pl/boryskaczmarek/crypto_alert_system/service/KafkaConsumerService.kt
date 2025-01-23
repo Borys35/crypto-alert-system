@@ -29,8 +29,7 @@ class KafkaConsumerService(private val mapper: ObjectMapper) {
             }
         }
 
-        // TODO: Send email to a user if usd_24h_change is over a threshold
-        // TODO: Create 'Alert' model to the database
+        // TODO: Send email to a user if usd_24h_change is over a threshold based on 'Alert'
 
         println("Alert: $crypto at price: ${map.toString()}")
     }
