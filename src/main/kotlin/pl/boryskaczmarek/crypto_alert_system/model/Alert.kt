@@ -4,15 +4,15 @@ import jakarta.persistence.*
 import org.hibernate.proxy.HibernateProxy
 
 @Entity
-@Table(name = "app_user")
-data class User(
-    @Id var id : Int,
-    var username: String,
-    var avatarUrl: String? = "https://gravatar.com/avatar/${username}?s=400&d=retro&r=x",
-    @OneToMany(mappedBy = "user") private val alerts: Set<Alert> = HashSet()
+@Table(name = "alert")
+data class Alert(
+    @Id @GeneratedValue var id: Long? = null,
+    @ManyToOne @JoinColumn(name = "user_id", nullable = false) var user: User,
+    var ids: String,
+    var vsCurrencies: String,
+    var threshold: Float,
+    var comparison: Char, // "+" or "-"
 ) {
-
-
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null) return false
@@ -21,7 +21,7 @@ data class User(
         val thisEffectiveClass =
             if (this is HibernateProxy) this.hibernateLazyInitializer.persistentClass else this.javaClass
         if (thisEffectiveClass != oEffectiveClass) return false
-        other as User
+        other as Alert
 
         return id != null && id == other.id
     }
@@ -31,6 +31,6 @@ data class User(
 
     @Override
     override fun toString(): String {
-        return this::class.simpleName + "(  id = $id   ,   username = $username   ,   avatarUrl = $avatarUrl )"
+        return this::class.simpleName + "(  id = $id )"
     }
 }

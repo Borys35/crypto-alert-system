@@ -6,6 +6,6 @@ import pl.boryskaczmarek.crypto_alert_system.model.User
 import java.util.*
 
 @Repository
-interface UserRepository : JpaRepository<User, Long> {
+interface UserRepository : JpaRepository<User, Int> {
     fun findByUsername(username: String): Optional<User>
 }
