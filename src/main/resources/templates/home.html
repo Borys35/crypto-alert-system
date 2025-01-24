@@ -8,6 +8,7 @@
 <p th:if="${user}">
     Logged in as: <span th:text="${user.name}"></span>
 </p>
+<span th:text="${user}"></span>
 <a th:if="${user}" href="/logout">Logout</a>
 <a th:unless="${user}" href="/login">Login</a>
 </body>

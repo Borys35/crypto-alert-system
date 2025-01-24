@@ -3,7 +3,7 @@ package pl.boryskaczmarek.crypto_alert_system.service
 import org.springframework.http.*
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import pl.boryskaczmarek.crypto_alert_system.dto.CryptoData
+import pl.boryskaczmarek.crypto_alert_system.model.dto.CryptoData
 import java.math.BigDecimal
 
 @Service

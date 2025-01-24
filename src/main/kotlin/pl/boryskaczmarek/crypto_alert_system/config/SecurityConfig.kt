@@ -8,10 +8,11 @@ import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.server.SecurityWebFilterChain
 import pl.boryskaczmarek.crypto_alert_system.service.CustomOAuth2UserService
+import pl.boryskaczmarek.crypto_alert_system.service.UserService
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(private val userService: UserService) {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -23,7 +24,7 @@ class SecurityConfig {
             }
             .oauth2Login { it ->
                 it.userInfoEndpoint {
-                    it.userService(CustomOAuth2UserService())
+                    it.userService(CustomOAuth2UserService(userService))
                 }
             }
             .logout {

@@ -1,4 +1,4 @@
-package pl.boryskaczmarek.crypto_alert_system.dto
+package pl.boryskaczmarek.crypto_alert_system.model.dto
 
 import java.math.BigDecimal
 

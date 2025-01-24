@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
-import pl.boryskaczmarek.crypto_alert_system.dto.CryptoData
+import pl.boryskaczmarek.crypto_alert_system.model.dto.CryptoData
 
 class CryptoPriceFetcherTest {
 
