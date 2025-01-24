@@ -8,10 +8,10 @@ import org.hibernate.proxy.HibernateProxy
 data class Alert(
     @Id @GeneratedValue var id: Long? = null,
     @ManyToOne @JoinColumn(name = "user_id", nullable = false) var user: User,
-    var ids: String,
-    var vsCurrencies: String,
-    var threshold: Float,
-    var comparison: Char, // "+" or "-"
+    var ids: String = "",
+    var vsCurrencies: String = "",
+    var threshold: Float = 0.0f,
+    var comparison: Char = '+', // "+" or "-"
 ) {
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true

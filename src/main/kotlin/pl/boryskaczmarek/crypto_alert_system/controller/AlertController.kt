@@ -19,7 +19,7 @@ class AlertController(
     }
 
     @PostMapping("/create")
-    fun createAlert(@AuthenticationPrincipal user: OAuth2User?, @RequestBody alertDto: AlertDto): Alert {
+    fun createAlert(@AuthenticationPrincipal user: OAuth2User?, @ModelAttribute alertDto: AlertDto): Alert {
         return alertService.save(alertDto, user!!.attributes["id"] as Int)
     }
 }

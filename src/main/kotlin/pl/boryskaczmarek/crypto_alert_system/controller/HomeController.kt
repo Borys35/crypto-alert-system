@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+import pl.boryskaczmarek.crypto_alert_system.model.dto.AlertDto
 
 @Controller
 class HomeController {
@@ -14,5 +15,12 @@ class HomeController {
     fun home(@AuthenticationPrincipal user: OAuth2User?, model: Model): String {
         model.addAttribute("user", user)
         return "home"
+    }
+
+    @GetMapping("/alerts")
+    fun alerts(@AuthenticationPrincipal user: OAuth2User?, model: Model): String {
+        model.addAttribute("user", user)
+        model.addAttribute("alertDto", AlertDto())
+        return "alerts"
     }
 }

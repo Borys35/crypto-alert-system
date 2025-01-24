@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Alerts</title>
+</head>
+  <body>
+    <h1>Alerts</h1>
+    <p th:if="${user}">
+      Logged in as: <span th:text="${user.attributes.get('login')}"></span>
+    </p>
+    <!--/*@thymesVar id="alertDto" type="pl.boryskaczmarek.crypto_alert_system.model.dto.AlertDto"*/-->
+    <form action="#" th:action="@{/api/alerts/create}" th:object="${alertDto}" method="post">
+      <label>
+        Ids:
+        <input type="text" th:field="*{ids}" />
+      </label><br />
+      <label>
+        Vs Currencies:
+        <input type="text" th:field="*{vsCurrencies}" />
+      </label><br />
+      <label>
+        Threshold:
+        <input type="text" th:field="*{threshold}" />
+      </label><br />
+      <label>
+        Comparison:
+        <input type="text" th:field="*{comparison}" />
+      </label><br />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
