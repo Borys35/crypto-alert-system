@@ -6,9 +6,8 @@
 <body>
 <h1>Welcome!</h1>
 <p th:if="${user}">
-    Logged in as: <span th:text="${user.name}"></span>
+    Logged in as: <span th:text="${user.attributes.get('login')}"></span>
 </p>
-<span th:text="${user}"></span>
 <a th:if="${user}" href="/logout">Logout</a>
 <a th:unless="${user}" href="/login">Login</a>
 </body>
