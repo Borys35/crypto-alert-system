@@ -6,9 +6,9 @@ import org.hibernate.proxy.HibernateProxy
 @Entity
 @Table(name = "app_user")
 data class User(
+    @Id var id : Int,
     var username: String,
     var avatarUrl: String? = "https://gravatar.com/avatar/${username}?s=400&d=retro&r=x",
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id : Long?,
 ) {
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true

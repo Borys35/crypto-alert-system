@@ -10,8 +10,12 @@ class CustomOAuth2UserService(private val userService: UserService) : DefaultOAu
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
         val oAuth2User = super.loadUser(userRequest)
 
-        val user = User(oAuth2User.attributes["login"] as String, oAuth2User.attributes["avatar_url"] as String, null)
-        println(userService.save(user))
+        val user = User(
+            oAuth2User.attributes["id"] as Int,
+            oAuth2User.attributes["login"] as String,
+            oAuth2User.attributes["avatar_url"] as String,
+        )
+        userService.save(user)
 
         return oAuth2User
     }
