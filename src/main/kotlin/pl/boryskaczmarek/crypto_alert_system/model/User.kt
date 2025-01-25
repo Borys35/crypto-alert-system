@@ -8,6 +8,7 @@ import org.hibernate.proxy.HibernateProxy
 data class User(
     @Id var id : Int,
     var username: String,
+    var email: String,
     var avatarUrl: String? = "https://gravatar.com/avatar/${username}?s=400&d=retro&r=x",
     @OneToMany(mappedBy = "user") private val alerts: Set<Alert> = HashSet()
 ) {
@@ -31,6 +32,6 @@ data class User(
 
     @Override
     override fun toString(): String {
-        return this::class.simpleName + "(  id = $id   ,   username = $username   ,   avatarUrl = $avatarUrl )"
+        return this::class.simpleName + "(  id = $id   ,   username = $username )"
     }
 }

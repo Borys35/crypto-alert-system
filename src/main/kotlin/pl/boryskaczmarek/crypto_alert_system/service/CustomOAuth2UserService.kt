@@ -13,6 +13,7 @@ class CustomOAuth2UserService(private val userService: UserService) : DefaultOAu
         val user = User(
             oAuth2User.attributes["id"] as Int,
             oAuth2User.attributes["login"] as String,
+            oAuth2User.attributes["email"] as String,
             oAuth2User.attributes["avatar_url"] as String,
         )
         userService.save(user)
