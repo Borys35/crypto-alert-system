@@ -2,14 +2,16 @@ package pl.boryskaczmarek.crypto_alert_system.model
 
 import jakarta.persistence.*
 import org.hibernate.proxy.HibernateProxy
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "alert")
 data class Alert(
     @Id @GeneratedValue var id: Long? = null,
     @ManyToOne @JoinColumn(name = "user_id", nullable = false) var user: User,
-    var ids: String = "",
-    var vsCurrencies: String = "",
+    var lastSent: LocalDateTime = LocalDateTime.MIN,
+    var ids: String = "bitcoin",
+    var vsCurrencies: String = "usd",
     var threshold: Float = 0.0f,
     var comparison: Char = '+', // "+" or "-"
 ) {

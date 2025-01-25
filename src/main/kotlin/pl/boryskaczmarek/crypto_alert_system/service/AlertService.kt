@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service
 import pl.boryskaczmarek.crypto_alert_system.model.Alert
 import pl.boryskaczmarek.crypto_alert_system.model.dto.AlertDto
 import pl.boryskaczmarek.crypto_alert_system.repository.AlertRepository
+import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -22,6 +23,7 @@ class AlertService(
         val alert = Alert(
             null,
             user.get(),
+            LocalDateTime.of(2020, 1, 1, 0, 0),
             alertDto.ids,
             alertDto.vsCurrencies,
             alertDto.threshold,
@@ -32,5 +34,9 @@ class AlertService(
 
     fun findById(id: Long): Optional<Alert> {
         return alertRepository.findById(id)
+    }
+
+    fun findByIdsContains(ids: String): List<Alert> {
+        return alertRepository.findByIdsContains(ids)
     }
 }

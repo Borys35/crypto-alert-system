@@ -7,7 +7,10 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Service
 
 @Service
-class KafkaConsumerService(private val mapper: ObjectMapper) {
+class KafkaConsumerService(
+    private val mapper: ObjectMapper,
+    private val alertService: AlertService
+) {
     @KafkaListener(topics = ["crypto-prices"], groupId = "alert-group")
     fun processPriceUpdate(@Header(KafkaHeaders.RECEIVED_KEY) crypto: String, dataString: String) {
         /* {
@@ -17,7 +20,6 @@ class KafkaConsumerService(private val mapper: ObjectMapper) {
             pln_24h_change=-2.2962781286374043,
             last_updated_at=1737578525
         } */
-
         val pairs = dataString.removeSurrounding("{", "}").split(", ")
         val map = mutableMapOf<String, Any>()
         for (pair in pairs) {
@@ -30,7 +32,11 @@ class KafkaConsumerService(private val mapper: ObjectMapper) {
         }
 
         // TODO: Send email to a user if usd_24h_change is over a threshold based on 'Alert'
-
+        val alerts = alertService.findByIdsContains(crypto)
+        println("alerts for $crypto: $alerts")
+        for (alert in alerts) {
+            println("Alert: $crypto -> ${alert.ids}")
+        }
         println("Alert: $crypto at price: ${map.toString()}")
     }
 }
