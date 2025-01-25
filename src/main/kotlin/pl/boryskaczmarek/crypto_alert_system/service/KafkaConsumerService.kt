@@ -6,6 +6,7 @@ import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
+import java.time.LocalDateTime
 
 @Service
 class KafkaConsumerService(
@@ -37,12 +38,19 @@ class KafkaConsumerService(
         val alerts = alertService.findByIdsContains(crypto)
         for (alert in alerts) {
             println("Alert: $crypto -> ${alert.ids}")
-            emailService.sendEmail(
-                alert.user.email,
-                crypto,
-                map["usd_24h_change"].toString(),
-                map["usd"].toString()
-            )
+            if (alert.lastSent.isBefore(LocalDateTime.now().minusDays(1))) {
+                if ((alert.comparison == '+' && (map["usd_24h_change"] as Double).toFloat() >= alert.threshold)
+                    || (alert.comparison == '-' && (map["usd_24h_change"] as Double).toFloat() <= alert.threshold)
+                ) {
+                    alertService.updateLastSentDate(alert.id!!, LocalDateTime.now())
+                    emailService.sendEmail(
+                        alert.user.email,
+                        crypto,
+                        map["usd_24h_change"].toString(),
+                        map["usd"].toString()
+                    )
+                }
+            }
         }
         println("Alert: $crypto at price: ${map.toString()}")
     }

@@ -4,13 +4,14 @@ import org.springframework.stereotype.Service
 import pl.boryskaczmarek.crypto_alert_system.model.Alert
 import pl.boryskaczmarek.crypto_alert_system.model.dto.AlertDto
 import pl.boryskaczmarek.crypto_alert_system.repository.AlertRepository
+import pl.boryskaczmarek.crypto_alert_system.repository.UserRepository
 import java.time.LocalDateTime
 import java.util.*
 
 @Service
 class AlertService(
     val alertRepository: AlertRepository,
-    private val userService: UserService
+    private val userService: UserService,
 ) {
     fun findByUserId(userId: Int): List<Alert> {
         return alertRepository.findByUserId(userId)
@@ -30,6 +31,12 @@ class AlertService(
             alertDto.comparison,
         )
         return alertRepository.save(alert)
+    }
+
+    fun updateLastSentDate(alertId: Long, newLastSent: LocalDateTime) {
+        val alert = findById(alertId).get()
+        alert.lastSent = newLastSent
+        alertRepository.save(alert)
     }
 
     fun findById(id: Long): Optional<Alert> {
