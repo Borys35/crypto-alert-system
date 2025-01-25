@@ -5,11 +5,13 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 @Service
 class KafkaConsumerService(
     private val mapper: ObjectMapper,
-    private val alertService: AlertService
+    private val alertService: AlertService,
+    private val emailService: EmailService
 ) {
     @KafkaListener(topics = ["crypto-prices"], groupId = "alert-group")
     fun processPriceUpdate(@Header(KafkaHeaders.RECEIVED_KEY) crypto: String, dataString: String) {
@@ -25,7 +27,7 @@ class KafkaConsumerService(
         for (pair in pairs) {
             val (key, value) = pair.split("=")
             map[key] = when {
-                value.toBigDecimal() != null -> value.toBigDecimal() // Handle numeric values
+                value.toDoubleOrNull() != null -> value.toDouble() // Handle numeric values
                 value.toIntOrNull() != null -> value.toInt() // Handle integer values
                 else -> value // Treat as string
             }
@@ -33,9 +35,14 @@ class KafkaConsumerService(
 
         // TODO: Send email to a user if usd_24h_change is over a threshold based on 'Alert'
         val alerts = alertService.findByIdsContains(crypto)
-        println("alerts for $crypto: $alerts")
         for (alert in alerts) {
             println("Alert: $crypto -> ${alert.ids}")
+            emailService.sendEmail(
+                alert.user.email,
+                crypto,
+                map["usd_24h_change"].toString(),
+                map["usd"].toString()
+            )
         }
         println("Alert: $crypto at price: ${map.toString()}")
     }
