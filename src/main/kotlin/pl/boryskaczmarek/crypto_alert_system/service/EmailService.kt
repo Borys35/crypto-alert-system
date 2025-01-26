@@ -13,7 +13,7 @@ class EmailService(private val javaMailSender: JavaMailSender) {
 
         message.setFrom("boryskac10@gmail.com")
         message.setRecipient(Message.RecipientType.TO, InternetAddress(email))
-        message.subject = "Threshold on $crypto has surpassed"
+        message.subject = "Threshold on ${crypto.uppercase()} has surpassed"
         message.setText("""
             Hello!
             ${crypto.uppercase()} has surpassed the threshold.
