@@ -106,6 +106,12 @@ A real-time cryptocurrency alert system that fetches the latest prices and chang
          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
          KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+     lgtm:
+       image: 'grafana/otel-lgtm'
+       ports:
+          - '4317:4317'
+          - '4318:4318'
+          - '3000:3000'
    ```
 
 4. Start the Docker containers:

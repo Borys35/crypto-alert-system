@@ -1,6 +1,8 @@
 package pl.boryskaczmarek.crypto_alert_system.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.handler.annotation.Header
@@ -14,6 +16,8 @@ class KafkaConsumerService(
     private val alertService: AlertService,
     private val emailService: EmailService
 ) {
+    private val logger: Logger = LoggerFactory.getLogger(KafkaConsumerService::class.java)
+
     @KafkaListener(topics = ["crypto-prices"], groupId = "alert-group")
     fun processPriceUpdate(@Header(KafkaHeaders.RECEIVED_KEY) crypto: String, dataString: String) {
         /* {
@@ -37,7 +41,7 @@ class KafkaConsumerService(
         // TODO: Send email to a user if usd_24h_change is over a threshold based on 'Alert'
         val alerts = alertService.findByIdsContains(crypto)
         for (alert in alerts) {
-            println("Alert: $crypto -> ${alert.ids}")
+            logger.info("Sending $crypto alert to: ${alert.id}")
             if (alert.lastSent.isBefore(LocalDateTime.now().minusDays(1))) {
                 if ((alert.comparison == '+' && (map["usd_24h_change"] as Double).toFloat() >= alert.threshold)
                     || (alert.comparison == '-' && (map["usd_24h_change"] as Double).toFloat() <= alert.threshold)
@@ -52,6 +56,6 @@ class KafkaConsumerService(
                 }
             }
         }
-        println("Alert: $crypto at price: ${map.toString()}")
+        logger.info("Alert: $crypto: ${map.toString()}")
     }
 }
