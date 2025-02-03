@@ -41,11 +41,11 @@ class KafkaConsumerService(
         // TODO: Send email to a user if usd_24h_change is over a threshold based on 'Alert'
         val alerts = alertService.findByIdsContains(crypto)
         for (alert in alerts) {
-            logger.info("Sending $crypto alert to: ${alert.id}")
             if (alert.lastSent.isBefore(LocalDateTime.now().minusDays(1))) {
                 if ((alert.comparison == '+' && (map["usd_24h_change"] as Double).toFloat() >= alert.threshold)
                     || (alert.comparison == '-' && (map["usd_24h_change"] as Double).toFloat() <= alert.threshold)
                 ) {
+                    logger.info("Sending $crypto alert to: ${alert.id}")
                     alertService.updateLastSentDate(alert.id!!, LocalDateTime.now())
                     emailService.sendEmail(
                         alert.user.email,
